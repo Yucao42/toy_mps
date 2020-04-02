@@ -1,0 +1,46 @@
+nvcc -o toy ./toy_mps.cu
+
+echo "=============="
+echo "=== No MPS ==="
+echo "=============="
+echo ""
+
+echo "Run toy alone twice"
+./toy
+echo ""
+./toy
+echo ""
+
+
+echo "Run 2 toys parallel twice"
+./toy & ./toy &
+sleep 0.5
+echo ""
+./toy & ./toy &
+sleep 0.5
+echo ""
+
+echo "=============="
+echo "=== With MPS ==="
+echo "=============="
+echo ""
+
+# Turn on MPS on daemon
+sudo nvidia-cuda-mps-control -d
+echo "Run toy alone twice"
+./toy
+echo ""
+./toy
+echo ""
+
+
+echo "Run 2 toys parallel twice"
+./toy & ./toy &
+sleep 0.5
+echo ""
+./toy & ./toy &
+sleep 0.5
+echo ""
+
+# Shut down MPS
+sudo echo quit | nvidia-cuda-mps-control 
